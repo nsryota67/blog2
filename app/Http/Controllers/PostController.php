@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest; // useする
+
 
 class PostController extends Controller
 {
@@ -23,4 +25,15 @@ class PostController extends Controller
         return view('posts/show')->with(['posts' => $post]);
     }
     
+    public function create()
+    {
+        return view('posts/create');
+    }
+    
+    public function store(Post $post, PostRequest $request) // 引数をRequest->PostRequestにする
+    {
+        $input = $request['post'];
+        $post->fill($input)->save();
+        return redirect('/posts/' . $post->id);
+    }
 }
